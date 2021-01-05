@@ -68,7 +68,7 @@ def miillerTest(d, n):
 # input parameter that determines
 # accuracy level. Higher value of
 # k indicates more accuracy.
-def isPrime(n, k):
+def isPrime(n):
     # Corner cases
     k=4
     if (n <= 1 or n == 4):
@@ -89,27 +89,31 @@ def isPrime(n, k):
 
     return True;
 
+def trotate(s):
+    tmp = s[1 : ] + s[0 : 1]
+    return tmp
 
-# Driver Code
-# Number of iterations
+def primes(n):
+    """ Returns  a list of primes < n """
+    sieve = [True] * n
+    for i in range(3,int(n**0.5)+1,2):
+        if sieve[i]:
+            sieve[i*i::2*i]=[False]*((n-i*i-1)//(2*i)+1)
+    return [2] + [i for i in range(3,n,2) if sieve[i]]
 
-max=0
-prod=0
+primos = primes(1000000)
+resp =[]
 
+for i in primos:
+    lret=True
+    num = int(trotate(str(i)))
+    while num!=i:
+        if isPrime(num)==False:
+            lret=False
+        num = int(trotate(str(num).zfill(len(str(i)))))
+        #print(num)
+    if lret:
+        resp.append(i)
 
-for a in range(-999,1000):
-    for b in range(-1000,1001):
-        results=[]
-        for n in range(10000):
-            result = n**2+a*n+b
-            if isPrime(result,k):
-                results.append(result)
-            else:
-                if len(results)>max:
-                    max=len(results)
-                    prod=a*b
-                break
-        print(a,b,max)
-
-print(prod)
-
+print(resp)
+print(f"Number of circular primes = {len(resp)}")

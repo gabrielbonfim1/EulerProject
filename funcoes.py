@@ -1,5 +1,29 @@
-# Python3 program Miller-Rabin primality test
 import random
+import math
+
+
+def is_pandigital(x):
+    num = str(x)
+    dict = {'0':0,'1':0,'2':0,'3':0,'4':0,'5':0,'6':0,'7':0,'8':0,'9':0}
+    if len(num)>10:
+        return False
+    for i in num:
+        dict[i]+=1
+        if dict[i]>1:
+            return False
+    return True
+
+
+
+def gen_primes(n):
+    """ Returns  a list of primes < n """
+    sieve = [True] * n
+    for i in range(3,int(n**0.5)+1,2):
+        if sieve[i]:
+            sieve[i*i::2*i]=[False]*((n-i*i-1)//(2*i)+1)
+    return [2] + [i for i in range(3,n,2) if sieve[i]]
+
+# Python3 program Miller-Rabin primality test
 
 # Utility function to do
 # modular exponentiation.
@@ -68,7 +92,7 @@ def miillerTest(d, n):
 # input parameter that determines
 # accuracy level. Higher value of
 # k indicates more accuracy.
-def isPrime(n, k):
+def is_prime(n):
     # Corner cases
     k=4
     if (n <= 1 or n == 4):
@@ -89,27 +113,21 @@ def isPrime(n, k):
 
     return True;
 
+def is_palindrome(x):
+    x = str(x)
+    if len(x)%2 ==0:
+        i = int(len(x)/2)
+        t = i+1
+    else:
+        i = t = int(math.ceil(len(x)/2))
 
-# Driver Code
-# Number of iterations
+    lret = True
+    while i>0:
+        if x[i-1]==x[t-1]:
+            i-=1
+            t+=1
+        else:
+            lret = False
+            break
 
-max=0
-prod=0
-
-
-for a in range(-999,1000):
-    for b in range(-1000,1001):
-        results=[]
-        for n in range(10000):
-            result = n**2+a*n+b
-            if isPrime(result,k):
-                results.append(result)
-            else:
-                if len(results)>max:
-                    max=len(results)
-                    prod=a*b
-                break
-        print(a,b,max)
-
-print(prod)
-
+    return lret
